@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProSync - Espacios de Trabajo</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <h1>⚡ ProSync</h1>
+        <p>Sincroniza tu equipo, impulsa tus proyectos</p>
+        <button onclick="cerrarSesion()" class="btn-logout">Cerrar sesión</button>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- Formulario crear espacio -->
+    <section class="card">
+        <h2>➕ Crear Espacio de Trabajo</h2>
+        <div class="form-group">
+            <input
+                    type="text"
+                    id="workspaceName"
+                    placeholder="Nombre del espacio (ej: Proyecto ProSync)"
+                    maxlength="100"
+            />
+            <button onclick="crearEspacio()">Crear Espacio</button>
+        </div>
+        <p id="mensaje" class="mensaje"></p>
+    </section>
+
+    <!-- Lista de espacios -->
+    <section class="card">
+        <h2>📋 Espacios Registrados</h2>
+        <div id="listaEspacios">
+            <p class="cargando">Cargando espacios...</p>
+        </div>
+    </section>
+
+</main>
+
+<script src="/js/app.js"></script>
+<script src="/js/auth.js"></script>
+
+</body>
+</html>
