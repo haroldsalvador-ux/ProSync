@@ -1,50 +1,270 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProSync - Espacios de Trabajo</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>ProSync - Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-link {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-link:hover {
+            background: rgba(124, 58, 237, 0.1);
+            color: #a78bfa;
+        }
+
+        .sidebar-link.active {
+            background: rgba(124, 58, 237, 0.2);
+            color: #a78bfa;
+            border-right: 3px solid #7c3aed;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        /* Modal animations */
+        #workspaceModal {
+            transition: opacity 0.3s ease;
+        }
+        #workspaceModal.hidden {
+            display: none;
+            opacity: 0;
+        }
+    </style>
 </head>
-<body>
+<body class="text-slate-200 overflow-hidden">
 
-<header>
-    <div class="header-content">
-        <h1>⚡ ProSync</h1>
-        <p>Sincroniza tu equipo, impulsa tus proyectos</p>
-        <button onclick="cerrarSesion()" class="btn-logout">Cerrar sesión</button>
+    <div class="flex h-screen w-full">
+        <!-- Sidebar -->
+        <aside class="w-64 flex-shrink-0 border-r border-slate-800 bg-[#0f172a] flex flex-col">
+            <div class="p-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-violet-500/20">
+                        <i data-lucide="layers" class="text-white w-6 h-6"></i>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight text-white">ProSync</span>
+                </div>
+            </div>
+
+            <nav class="flex-1 mt-4 px-3 space-y-1 overflow-y-auto custom-scrollbar">
+                <a href="#" class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    Dashboard
+                </a>
+                <a href="#workspaces" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400">
+                    <i data-lucide="briefcase" class="w-5 h-5"></i>
+                    Mis Espacios
+                </a>
+                <a href="#calendar" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    Calendario
+                </a>
+                <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                    Configuración
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-slate-800">
+                <button onclick="cerrarSesion()" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-colors">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col min-w-0 bg-[#0b1120] overflow-y-auto custom-scrollbar p-8">
+            <!-- Header Section -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold text-white mb-2">Panel de Control</h1>
+                    <p class="text-slate-400">Gestiona tus proyectos y colaboraciones en tiempo real.</p>
+                </div>
+                <button onclick="toggleModal(true)" class="flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white px-5 py-2.5 rounded-xl font-semibold transition-all shadow-lg shadow-violet-500/20 active:scale-95">
+                    <i data-lucide="plus" class="w-5 h-5"></i>
+                    Nuevo Espacio
+                </button>
+            </div>
+
+            <!-- Stats Grid (Bonus) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-violet-500/10 rounded-lg text-violet-400">
+                            <i data-lucide="folder" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-xs font-medium text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">+12%</span>
+                    </div>
+                    <h3 class="text-slate-400 text-sm font-medium">Espacios Activos</h3>
+                    <p class="text-2xl font-bold text-white mt-1" id="totalEspacios">0</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-blue-500/10 rounded-lg text-blue-400">
+                            <i data-lucide="check-circle" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-slate-400 text-sm font-medium">Tareas Completadas</h3>
+                    <p class="text-2xl font-bold text-white mt-1">24</p>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-amber-500/10 rounded-lg text-amber-400">
+                            <i data-lucide="clock" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-slate-400 text-sm font-medium">Próximas Entregas</h3>
+                    <p class="text-2xl font-bold text-white mt-1">3</p>
+                </div>
+            </div>
+
+            <!-- Table Section -->
+            <section id="workspaces" class="mb-12">
+                <div class="flex items-center gap-3 mb-6">
+                    <i data-lucide="list" class="text-violet-500"></i>
+                    <h2 class="text-xl font-bold text-white">Mis Espacios de Trabajo</h2>
+                </div>
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-slate-800 bg-slate-900/50">
+                                    <th class="px-6 py-4 text-sm font-semibold text-slate-300">Nombre del Espacio</th>
+                                    <th class="px-6 py-4 text-sm font-semibold text-slate-300">Fecha de Creación</th>
+                                    <th class="px-6 py-4 text-sm font-semibold text-slate-300">Estado</th>
+                                    <th class="px-6 py-4 text-sm font-semibold text-slate-300 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaEspacios" class="divide-y divide-slate-800">
+                                <!-- Contenido dinámico -->
+                                <tr>
+                                    <td colspan="4" class="px-6 py-10 text-center text-slate-500 italic">
+                                        Cargando espacios...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calendar Section -->
+            <section id="calendar" class="mb-12">
+                <div class="flex items-center gap-3 mb-6">
+                    <i data-lucide="calendar" class="text-violet-500"></i>
+                    <h2 class="text-xl font-bold text-white">Calendario de Actividades</h2>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="grid grid-cols-7 gap-px bg-slate-800 border border-slate-800 rounded-xl overflow-hidden">
+                        <!-- Header days -->
+                        <div class="bg-slate-900/80 p-3 text-center text-xs font-bold text-slate-500">LUN</div>
+                        <div class="bg-slate-900/80 p-3 text-center text-xs font-bold text-slate-500">MAR</div>
+                        <div class="bg-slate-900/80 p-3 text-center text-xs font-bold text-slate-500">MIÉ</div>
+                        <div class="bg-slate-900/80 p-3 text-center text-xs font-bold text-slate-500">JUE</div>
+                        <div class="bg-slate-900/80 p-3 text-center text-xs font-bold text-slate-500">VIE</div>
+                        <div class="bg-slate-900/80 p-3 text-center text-xs font-bold text-slate-500 text-violet-400">SÁB</div>
+                        <div class="bg-slate-900/80 p-3 text-center text-xs font-bold text-slate-500 text-violet-400">DOM</div>
+
+                        <!-- Mock Calendar Cells -->
+                        <script>
+                            for(let i=1; i<=31; i++) {
+                                let badge = '';
+                                if(i === 12) badge = '<span class="block w-2 h-2 rounded-full bg-violet-500 mt-1"></span>';
+                                if(i === 24) badge = '<span class="block w-2 h-2 rounded-full bg-emerald-500 mt-1"></span>';
+                                document.write(`
+                                    <div class="bg-[#0f172a] h-24 p-3 text-sm transition-colors hover:bg-slate-800/50 flex flex-col justify-between">
+                                        <span class="${i === 16 ? 'text-violet-400 font-bold' : 'text-slate-400'}">${i}</span>
+                                        <div class="flex gap-1">${badge}</div>
+                                    </div>
+                                `);
+                            }
+                        </script>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
-</header>
 
-<main class="container">
-
-    <!-- Formulario crear espacio -->
-    <section class="card">
-        <h2>➕ Crear Espacio de Trabajo</h2>
-        <div class="form-group">
-            <input
-                    type="text"
-                    id="workspaceName"
-                    placeholder="Nombre del espacio (ej: Proyecto ProSync)"
-                    maxlength="100"
-            />
-            <button onclick="crearEspacio()">Crear Espacio</button>
+    <!-- Modal Nuevo Espacio -->
+    <div id="workspaceModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden">
+        <div class="bg-[#1e293b] w-full max-w-md rounded-2xl shadow-2xl border border-slate-700 transform transition-all">
+            <div class="p-6 border-b border-slate-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-white">Crear Nuevo Espacio</h3>
+                <button onclick="toggleModal(false)" class="text-slate-400 hover:text-white transition-colors">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div>
+                        <label for="workspaceName" class="block text-sm font-medium text-slate-400 mb-2">Nombre del Espacio</label>
+                        <input type="text" id="workspaceName" placeholder="Ej: Proyecto Rediseño" 
+                               class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 transition-all">
+                    </div>
+                    <p id="mensaje" class="text-sm font-medium min-h-[20px]"></p>
+                </div>
+            </div>
+            <div class="p-6 border-t border-slate-700 flex gap-3">
+                <button onclick="toggleModal(false)" class="flex-1 px-4 py-3 rounded-xl font-semibold text-slate-300 hover:bg-slate-800 transition-all">
+                    Cancelar
+                </button>
+                <button onclick="crearEspacio()" class="flex-1 bg-violet-600 hover:bg-violet-700 text-white px-4 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-violet-500/20">
+                    Crear Espacio
+                </button>
+            </div>
         </div>
-        <p id="mensaje" class="mensaje"></p>
-    </section>
+    </div>
 
-    <!-- Lista de espacios -->
-    <section class="card">
-        <h2>📋 Espacios Registrados</h2>
-        <div id="listaEspacios">
-            <p class="cargando">Cargando espacios...</p>
-        </div>
-    </section>
+    <script src="/js/app.js"></script>
+    <script src="/js/auth.js"></script>
+    <script>
+        // Inicializar iconos
+        lucide.createIcons();
 
-</main>
-
-<script src="/js/app.js"></script>
-<script src="/js/auth.js"></script>
-
+        // Función para el modal
+        function toggleModal(show) {
+            const modal = document.getElementById('workspaceModal');
+            if (show) {
+                modal.classList.remove('hidden');
+                document.getElementById('workspaceName').focus();
+            } else {
+                modal.classList.add('hidden');
+                document.getElementById('mensaje').textContent = '';
+            }
+        }
+    </script>
 </body>
 </html>
