@@ -26,7 +26,7 @@ async function crearEspacio() {
     const nombre = input.value.trim();
 
     if (!nombre) {
-        mostrarMensaje('⚠️ Escribe un nombre para el espacio.', 'error');
+        mostrarMensaje('Escribe un nombre para el espacio.', 'text-amber-400');
         return;
     }
 
@@ -38,48 +38,98 @@ async function crearEspacio() {
         });
 
         if (response.ok) {
-            mostrarMensaje('✅ Espacio creado exitosamente.', 'exito');
+            mostrarMensaje('Espacio creado exitosamente.', 'text-emerald-400');
             input.value = '';
-            listarEspacios();
+            setTimeout(() => {
+                toggleModal(false); // Función definida en workspace.html
+                listarEspacios();
+            }, 1000);
         } else {
-            mostrarMensaje('❌ Ya existe un espacio con ese nombre.', 'error');
+            mostrarMensaje('Ya existe un espacio con ese nombre.', 'text-red-400');
         }
     } catch (error) {
-        mostrarMensaje('❌ Error al conectar con el servidor.', 'error');
+        mostrarMensaje('Error al conectar con el servidor.', 'text-red-400');
     }
 }
 
 // Listar todos los espacios
 async function listarEspacios() {
     const lista = document.getElementById('listaEspacios');
+    const totalContador = document.getElementById('totalEspacios');
 
     try {
         const response = await fetch(API_URL);
         const espacios = await response.json();
 
+        if (totalContador) totalContador.textContent = espacios.length;
+
         if (espacios.length === 0) {
-            lista.innerHTML = '<p class="vacio">🗂️ No hay espacios creados aún.</p>';
+            lista.innerHTML = `
+                <tr>
+                    <td colspan="4" class="px-6 py-10 text-center text-slate-500 italic">
+                        No hay espacios creados aún. Empieza creando uno nuevo.
+                    </td>
+                </tr>
+            `;
             return;
         }
 
         lista.innerHTML = espacios.map(e => `
-            <div class="workspace-item">
-                <span class="nombre">📁 ${e.name}</span>
-                <span class="fecha">${formatearFecha(e.createdAt)}</span>
-                <button onclick="eliminarEspacio(${e.id})" class="btn-eliminar">🗑️</button>
-            </div>
+            <tr class="hover:bg-slate-800/30 transition-colors group">
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-violet-400 group-hover:bg-violet-500/10 transition-colors">
+                            <i data-lucide="folder" class="w-4 h-4"></i>
+                        </div>
+                        <span class="font-medium text-white">${e.name}</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-slate-400">
+                    ${formatearFecha(e.createdAt)}
+                </td>
+                <td class="px-6 py-4">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-400/10 text-emerald-400 border border-emerald-400/20">
+                        Activo
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-right">
+                    <div class="flex justify-end gap-2">
+                        <button class="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-all">
+                            <i data-lucide="edit-3" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="eliminarEspacio(${e.id})" class="p-2 text-slate-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
         `).join('');
 
+        // Reinicializar iconos para los nuevos elementos
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+
     } catch (error) {
-        lista.innerHTML = '<p class="vacio">❌ Error al cargar los espacios.</p>';
+        lista.innerHTML = `
+            <tr>
+                <td colspan="4" class="px-6 py-10 text-center text-red-400 italic">
+                    Error al cargar los espacios de trabajo.
+                </td>
+            </tr>
+        `;
     }
 }
 
 // Eliminar espacio
 async function eliminarEspacio(id) {
     if (!confirm('¿Seguro que quieres eliminar este espacio?')) return;
-    await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-    listarEspacios();
+    try {
+        await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+        listarEspacios();
+    } catch (error) {
+        console.error("Error al eliminar:", error);
+    }
 }
 
 // Formatear fecha
@@ -92,12 +142,13 @@ function formatearFecha(fechaISO) {
 }
 
 // Mostrar mensaje temporal
-function mostrarMensaje(texto, tipo) {
+function mostrarMensaje(texto, clases) {
     const mensaje = document.getElementById('mensaje');
+    if (!mensaje) return;
     mensaje.textContent = texto;
-    mensaje.className = `mensaje ${tipo}`;
+    mensaje.className = `text-sm font-medium min-h-[20px] ${clases}`;
     setTimeout(() => {
         mensaje.textContent = '';
-        mensaje.className = 'mensaje';
+        mensaje.className = 'text-sm font-medium min-h-[20px]';
     }, 3000);
 }

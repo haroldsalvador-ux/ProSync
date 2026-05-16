@@ -5,7 +5,7 @@ async function login() {
     const password = document.getElementById('password').value;
 
     if (!email || !password) {
-        mostrarMensaje('⚠️ Completa todos los campos.', 'error');
+        mostrarMensaje('Completa todos los campos.', 'text-amber-400');
         return;
     }
 
@@ -20,15 +20,15 @@ async function login() {
 
         if (response.ok) {
             localStorage.setItem('usuario', JSON.stringify(data));
-            mostrarMensaje('✅ Bienvenido ' + data.username, 'exito');
+            mostrarMensaje('¡Bienvenido, ' + data.username + '!', 'text-emerald-400');
             setTimeout(() => {
                 window.location.href = '/workspace.html';
             }, 1000);
         } else {
-            mostrarMensaje('❌ ' + (data.error || 'Credenciales incorrectas'), 'error');
+            mostrarMensaje(data.error || 'Credenciales incorrectas', 'text-red-400');
         }
     } catch (error) {
-        mostrarMensaje('❌ Error al conectar con el servidor.', 'error');
+        mostrarMensaje('Error al conectar con el servidor.', 'text-red-400');
     }
 }
 
@@ -38,7 +38,7 @@ async function registrar() {
     const password = document.getElementById('password').value;
 
     if (!username || !email || !password) {
-        mostrarMensaje('⚠️ Completa todos los campos.', 'error');
+        mostrarMensaje('Completa todos los campos.', 'text-amber-400');
         return;
     }
 
@@ -52,20 +52,25 @@ async function registrar() {
         const data = await response.json();
 
         if (response.ok) {
-            mostrarMensaje('✅ Cuenta creada. Redirigiendo...', 'exito');
+            mostrarMensaje('Cuenta creada. Redirigiendo...', 'text-emerald-400');
             setTimeout(() => {
                 window.location.href = '/login.html';
             }, 1500);
         } else {
-            mostrarMensaje('❌ ' + (data.error || 'Error al registrar'), 'error');
+            mostrarMensaje(data.error || 'Error al registrar', 'text-red-400');
         }
     } catch (error) {
-        mostrarMensaje('❌ Error al conectar con el servidor.', 'error');
+        mostrarMensaje('Error al conectar con el servidor.', 'text-red-400');
     }
 }
 
-function mostrarMensaje(texto, tipo) {
+function mostrarMensaje(texto, clases) {
     const mensaje = document.getElementById('mensaje');
+    if (!mensaje) return;
     mensaje.textContent = texto;
-    mensaje.className = `mensaje ${tipo}`;
+    mensaje.className = `text-sm font-medium min-h-[20px] text-center ${clases}`;
+    setTimeout(() => {
+        mensaje.textContent = '';
+        mensaje.className = 'text-sm font-medium min-h-[20px] text-center';
+    }, 3000);
 }
