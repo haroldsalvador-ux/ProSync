@@ -58,9 +58,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'prosync_db',
-        'USER': 'postgres',
-        'PASSWORD': '220290171802',
-        'HOST': 'localhost',
+        'USER': 'admin_prosync',
+        'PASSWORD': 'Wdh1idAqre1axo7PSRnIBFSjIKzcv7bg',
+        'HOST': 'dpg-d860mrb7uimc73bro2ug-a.ohio-postgres.render.com/prosync_db_agfz',
         'PORT': '5432',
     }
 }
