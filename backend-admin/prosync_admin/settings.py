@@ -1,10 +1,7 @@
 from pathlib import Path
-import os
-os.environ['PGCLIENTECODING'] = 'utf-8'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Cambiar en producción. Generar con: python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 SECRET_KEY = 'django-insecure-prosync-dev-key-change-in-production'
 
 DEBUG = True
@@ -21,6 +18,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'workspaces',
+    'audit',
 ]
 
 MIDDLEWARE = [
@@ -54,14 +52,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'prosync_admin.wsgi.application'
 
+# ── Base de datos local PostgreSQL (misma instancia que Spring Boot) ──────────
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'prosync_db',
-        'USER': 'postgres',
+        'ENGINE':   'django.db.backends.postgresql',
+        'NAME':     'prosync_db',
+        'USER':     'postgres',
         'PASSWORD': '220290171802',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST':     'localhost',
+        'PORT':     '5432',
     }
 }
 
@@ -73,9 +72,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'es-es'
-TIME_ZONE = 'America/Lima'
-USE_I18N = True
-USE_TZ = True
+TIME_ZONE     = 'America/Lima'
+USE_I18N      = True
+USE_TZ        = True
 
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -85,6 +84,8 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
-    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.SessionAuthentication'],
+    'DEFAULT_PERMISSION_CLASSES':    ['rest_framework.permissions.AllowAny'],
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PAGINATION_CLASS':      'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE':                     20,
 }

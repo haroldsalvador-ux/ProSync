@@ -1,0 +1,16 @@
+from django.contrib import admin
+from .models import AuditLog
+
+
+@admin.register(AuditLog)
+class AuditLogAdmin(admin.ModelAdmin):
+    list_display  = ('action', 'user_email', 'entity_type', 'entity_id', 'created_at')
+    list_filter   = ('action', 'entity_type')
+    search_fields = ('user_email', 'action')
+    readonly_fields = ('id', 'user_email', 'action', 'entity_type', 'entity_id', 'details', 'created_at')
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
