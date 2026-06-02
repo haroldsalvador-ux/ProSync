@@ -15,11 +15,13 @@ D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\
 D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\task\TaskService.java
 D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\auth\AuthService.java
 D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\auth\UserResponse.java
+D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\auth\UpdateProfileRequest.java
 D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\auth\AuthResponse.java
 D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\auth\UserRepository.java
 D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\task\TaskController.java
 D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\auth\UserController.java
 D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\config\JwtAuthFilter.java
+D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\workspace\WorkspaceMemberRequest.java
 D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\workspace\WorkspaceRequest.java
 D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\workspace\WorkspaceRepository.java
 D:\personal\estudio\construccion\ProSync\backend-user\src\main\java\com\prosync\task\TaskRepository.java
