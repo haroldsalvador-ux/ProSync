@@ -6,10 +6,10 @@ import {
 import { useAuth } from '../context/AuthContext';
 
 const NAV = [
-  { label: 'Dashboard',  icon: LayoutDashboard, to: '/dashboard', end: true  },
-  { label: 'Workspaces', icon: Layers,           to: '/dashboard', end: true  },
-  { label: 'Tareas',     icon: CheckSquare,      to: '/board',     end: false },
-  { label: 'Reportes',   icon: BarChart2,        to: '/reports',   end: false },
+  { label: 'Dashboard',  icon: LayoutDashboard, to: '/dashboard',  end: true  },
+  { label: 'Workspaces', icon: Layers,           to: '/workspaces', end: true  },
+  { label: 'Tareas',     icon: CheckSquare,      to: '/tasks',      end: true  },
+  { label: 'Reportes',   icon: BarChart2,        to: '/reports',    end: true  },
 ];
 
 const linkClass = ({ isActive }) =>
@@ -29,6 +29,10 @@ export default function Sidebar() {
     navigate('/');
   };
 
+  const initials = user?.fullName
+    ? user.fullName.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+    : 'U';
+
   return (
     <aside className="w-60 flex-shrink-0 bg-navy-dark border-r border-white/10 flex flex-col h-full">
       {/* Logo */}
@@ -47,24 +51,35 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* Usuario + settings + logout */}
+      {/* Footer */}
       <div className="px-3 py-4 border-t border-white/10 space-y-0.5">
         <NavLink to="/settings" className={linkClass}>
           <Settings size={17} />
           Configuración
         </NavLink>
 
-        {/* Perfil del usuario */}
+        {/* Perfil */}
         {user && (
-          <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl mt-1">
-            <div className="w-7 h-7 rounded-full bg-burgundy/50 border border-burgundy/40 flex items-center justify-center flex-shrink-0">
-              <User size={13} className="text-white/80" />
-            </div>
+          <NavLink
+            to="/settings"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl mt-1 hover:bg-white/8 transition-colors group"
+          >
+            {user.avatar ? (
+              <img
+                src={user.avatar}
+                alt="avatar"
+                className="w-7 h-7 rounded-full object-cover border border-burgundy/40 flex-shrink-0"
+              />
+            ) : (
+              <div className="w-7 h-7 rounded-full bg-burgundy/50 border border-burgundy/40 flex items-center justify-center flex-shrink-0">
+                <span className="text-white text-[10px] font-bold">{initials}</span>
+              </div>
+            )}
             <div className="flex-1 min-w-0">
               <p className="text-white/80 text-xs font-medium truncate">{user.fullName}</p>
               <p className="text-white/30 text-[10px] truncate">{user.email}</p>
             </div>
-          </div>
+          </NavLink>
         )}
 
         <button

@@ -22,6 +22,33 @@ export async function getWorkspaces() {
   return res.json();
 }
 
+export async function getWorkspaceMembers(workspaceId) {
+  const res = await fetch(`${BASE}/workspaces/${workspaceId}/members`, { headers: authHeaders() });
+  if (!res.ok) throw new Error('Error al obtener miembros');
+  return res.json();
+}
+
+export async function addWorkspaceMember(workspaceId, email) {
+  const res = await fetch(`${BASE}/workspaces/${workspaceId}/members`, {
+    method:  'POST',
+    headers: authHeaders(),
+    body:    JSON.stringify({ email }),
+  });
+  if (!res.ok) {
+    const msg = await res.text();
+    throw new Error(msg || 'Error al agregar miembro');
+  }
+  return res.json();
+}
+
+export async function removeWorkspaceMember(workspaceId, email) {
+  const res = await fetch(`${BASE}/workspaces/${workspaceId}/members/${encodeURIComponent(email)}`, {
+    method:  'DELETE',
+    headers: authHeaders(),
+  });
+  if (!res.ok) throw new Error('Error al eliminar miembro');
+}
+
 export async function createWorkspace(data) {
   const res = await fetch(`${BASE}/workspaces`, {
     method:  'POST',

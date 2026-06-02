@@ -23,6 +23,11 @@ public class TaskController {
         return service.findByWorkspace(workspaceId);
     }
 
+    @GetMapping("/all")
+    public List<Task> listAll() {
+        return service.findAll();
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Task create(@RequestBody @Valid TaskRequest req, Authentication auth) {

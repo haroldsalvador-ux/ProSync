@@ -44,6 +44,12 @@ export async function updateTaskStatus(id, status) {
   return res.json();
 }
 
+export async function getAllTasks() {
+  const res = await fetch(`${BASE}/tasks/all`, { headers: authHeaders() });
+  if (!res.ok) throw new Error('Error al obtener todas las tareas');
+  return res.json();
+}
+
 export async function deleteTask(id) {
   const res = await fetch(`${BASE}/tasks/${id}`, {
     method:  'DELETE',

@@ -22,8 +22,16 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  const updateUser = useCallback((updates) => {
+    setUser(prev => {
+      const updated = { ...prev, ...updates };
+      localStorage.setItem('prosync_user', JSON.stringify(updated));
+      return updated;
+    });
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, token: user?.token ?? null, login, logout }}>
+    <AuthContext.Provider value={{ user, token: user?.token ?? null, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

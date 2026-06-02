@@ -5,8 +5,12 @@ import Sidebar from './components/Sidebar';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import DashboardHome from './pages/DashboardHome';
 import WorkspacesPage from './pages/WorkspacesPage';
 import BoardPage from './pages/BoardPage';
+import TasksPage from './pages/TasksPage';
+import ReportsPage from './pages/ReportsPage';
+import SettingsPage from './pages/SettingsPage';
 
 function DashboardLayout() {
   return (
@@ -28,12 +32,16 @@ export default function App() {
         <Route path="/login"    element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* Rutas protegidas (requieren JWT) */}
+        {/* Rutas protegidas */}
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<WorkspacesPage />} />
-            <Route path="/board"     element={<BoardPage />} />
-            <Route path="*"          element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard"   element={<DashboardHome />} />
+            <Route path="/workspaces"  element={<WorkspacesPage />} />
+            <Route path="/board"       element={<BoardPage />} />
+            <Route path="/tasks"       element={<TasksPage />} />
+            <Route path="/reports"     element={<ReportsPage />} />
+            <Route path="/settings"    element={<SettingsPage />} />
+            <Route path="*"            element={<Navigate to="/dashboard" replace />} />
           </Route>
         </Route>
       </Routes>

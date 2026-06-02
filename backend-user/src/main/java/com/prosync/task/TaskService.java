@@ -23,6 +23,10 @@ public class TaskService {
         this.jdbc = jdbc;
     }
 
+    public List<Task> findAll() {
+        return repo.findAll();
+    }
+
     public List<Task> findByWorkspace(UUID workspaceId) {
         return repo.findByWorkspaceIdOrderByCreatedAtAsc(workspaceId);
     }

@@ -21,3 +21,13 @@ export async function getUsers() {
   if (!res.ok) throw new Error('Error al obtener usuarios');
   return res.json();
 }
+
+export async function updateProfile(data) {
+  const res = await fetch(`${BASE}/users/me`, {
+    method:  'PATCH',
+    headers: authHeaders(),
+    body:    JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('Error al actualizar perfil');
+  return res.json();
+}

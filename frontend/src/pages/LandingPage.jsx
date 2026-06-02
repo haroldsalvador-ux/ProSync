@@ -90,7 +90,7 @@ export default function LandingPage() {
           <div className="animate-slide-up">
             <span className="inline-flex items-center gap-2 text-xs font-semibold text-burgundy-light bg-burgundy/20 border border-burgundy/30 px-3 py-1.5 rounded-full mb-6">
               <Zap size={11} />
-              Sprint 2 — Plataforma completa disponible
+              Sprint 3 — Plataforma completa disponible
             </span>
             <h1 className="text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
               Centraliza tu equipo.<br />
