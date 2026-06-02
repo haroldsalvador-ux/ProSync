@@ -7,6 +7,8 @@ frontend/.env.local
 # ─── Spring Boot ─────────────────────────────────────────────────────────────
 backend-user/target/
 backend-user/.env
+backend-user/target/maven-status/
+**/maven-status/
 
 # ─── Django ──────────────────────────────────────────────────────────────────
 backend-admin/__pycache__/
