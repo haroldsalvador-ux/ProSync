@@ -1,0 +1,25 @@
+# ─── Frontend ────────────────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# ─── Spring Boot ─────────────────────────────────────────────────────────────
+backend-user/target/
+backend-user/.env
+
+# ─── Django ──────────────────────────────────────────────────────────────────
+backend-admin/__pycache__/
+backend-admin/**/__pycache__/
+backend-admin/*.pyc
+backend-admin/.env
+backend-admin/venv/
+backend-admin/env/
+
+# ─── Base de datos ────────────────────────────────────────────────────────────
+*.sql.bak
+
+# ─── Sistema ─────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.log

@@ -1,6 +1,7 @@
 package com.prosync.task;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -35,6 +36,9 @@ public class Task {
     @Column(name = "created_by", nullable = false)
     private String createdBy;
 
+    @Column(name = "due_date")
+    private LocalDate dueDate;
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private OffsetDateTime createdAt;
 
@@ -49,6 +53,7 @@ public class Task {
     public String getPriority()          { return priority; }
     public String getAssignee()          { return assignee; }
     public String getCreatedBy()         { return createdBy; }
+    public LocalDate getDueDate()        { return dueDate; }
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public OffsetDateTime getUpdatedAt() { return updatedAt; }
 
@@ -60,6 +65,7 @@ public class Task {
     public void setPriority(String priority)            { this.priority = priority; }
     public void setAssignee(String assignee)            { this.assignee = assignee; }
     public void setCreatedBy(String createdBy)          { this.createdBy = createdBy; }
+    public void setDueDate(LocalDate dueDate)           { this.dueDate = dueDate; }
     public void setCreatedAt(OffsetDateTime v)          { this.createdAt = v; }
     public void setUpdatedAt(OffsetDateTime v)          { this.updatedAt = v; }
 }

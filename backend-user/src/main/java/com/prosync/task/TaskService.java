@@ -31,11 +31,11 @@ public class TaskService {
         String status   = req.status()   != null ? req.status()   : "pending";
         String priority = req.priority() != null ? req.priority() : "medium";
         UUID id = Objects.requireNonNull(jdbc.queryForObject(
-                "INSERT INTO tasks (workspace_id, title, description, status, priority, assignee, created_by) " +
-                "VALUES (?, ?, ?, ?::task_status_enum, ?::task_priority_enum, ?, ?) RETURNING id",
+                "INSERT INTO tasks (workspace_id, title, description, status, priority, assignee, created_by, due_date) " +
+                "VALUES (?, ?, ?, ?::task_status_enum, ?::task_priority_enum, ?, ?, ?) RETURNING id",
                 UUID.class,
                 req.workspaceId(), req.title(), req.description(),
-                status, priority, req.assignee(), createdBy));
+                status, priority, req.assignee(), createdBy, req.dueDate()));
         audit(createdBy, "TASK_CREATED", id, Map.of("title", req.title(), "status", status));
         return repo.findById(id).orElseThrow();
     }

@@ -1,14 +1,20 @@
-import { useState } from 'react';
-import { X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, Loader2 } from 'lucide-react';
 import { createTask } from '../api/tasks';
+import { getUsers } from '../api/users';
 
 const PRIORITIES = ['low', 'medium', 'high'];
 const PRIORITY_LABEL = { low: 'Baja', medium: 'Media', high: 'Alta' };
 
 export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
-  const [form, setForm]     = useState({ title: '', description: '', priority: 'medium', assignee: '' });
+  const [form, setForm]     = useState({ title: '', description: '', priority: 'medium', assignee: '', dueDate: '' });
   const [saving, setSaving] = useState(false);
   const [error, setError]   = useState('');
+  const [users, setUsers]   = useState([]);
+
+  useEffect(() => {
+    getUsers().then(setUsers).catch(() => {});
+  }, []);
 
   const handle = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -23,7 +29,8 @@ export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
         title:       form.title.trim(),
         description: form.description.trim() || null,
         priority:    form.priority,
-        assignee:    form.assignee.trim() || null,
+        assignee:    form.assignee || null,
+        dueDate:     form.dueDate || null,
         status:      'pending',
       });
       onCreated(task);
@@ -54,6 +61,7 @@ export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
             </div>
           )}
 
+          {/* Título */}
           <div>
             <label className="label-glass">Título <span className="text-burgundy-light">*</span></label>
             <input
@@ -65,6 +73,7 @@ export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
             />
           </div>
 
+          {/* Prioridad */}
           <div>
             <label className="label-glass">Prioridad</label>
             <div className="flex gap-2 mt-1">
@@ -85,17 +94,46 @@ export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
             </div>
           </div>
 
+          {/* Responsable */}
           <div>
             <label className="label-glass">Responsable</label>
+            {users.length > 0 ? (
+              <select
+                name="assignee"
+                value={form.assignee}
+                onChange={handle}
+                className="input-glass appearance-none"
+              >
+                <option value="">Sin asignar</option>
+                {users.map(u => (
+                  <option key={u.email} value={u.email}>{u.fullName} — {u.email}</option>
+                ))}
+              </select>
+            ) : (
+              <input
+                name="assignee"
+                value={form.assignee}
+                onChange={handle}
+                placeholder="Email del responsable"
+                className="input-glass"
+              />
+            )}
+          </div>
+
+          {/* Fecha límite */}
+          <div>
+            <label className="label-glass">Fecha límite</label>
             <input
-              name="assignee"
-              value={form.assignee}
+              type="date"
+              name="dueDate"
+              value={form.dueDate}
               onChange={handle}
-              placeholder="Nombre del responsable"
               className="input-glass"
+              style={{ colorScheme: 'dark' }}
             />
           </div>
 
+          {/* Descripción */}
           <div>
             <label className="label-glass">Descripción</label>
             <textarea
@@ -113,7 +151,7 @@ export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
             <button type="submit" disabled={saving} className="flex-1 btn-primary">
               {saving ? (
                 <span className="inline-flex items-center justify-center gap-2">
-                  <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <Loader2 size={14} className="animate-spin" />
                   Creando...
                 </span>
               ) : 'Crear Tarea'}

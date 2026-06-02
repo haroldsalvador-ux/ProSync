@@ -3,6 +3,7 @@ package com.prosync.task;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public record TaskRequest(
@@ -11,5 +12,6 @@ public record TaskRequest(
         String description,
         String status,
         String priority,
-        String assignee
+        String assignee,
+        LocalDate dueDate
 ) {}

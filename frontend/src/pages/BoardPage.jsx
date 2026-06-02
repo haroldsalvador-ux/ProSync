@@ -24,7 +24,7 @@ export default function BoardPage() {
           </div>
           <div>
             <h1 className="text-xl font-bold text-white">{workspaceName}</h1>
-            <p className="text-white/40 text-xs">Tablero Kanban — Sprint 2</p>
+            <p className="text-white/40 text-xs">Tablero Kanban — Sprint 3</p>
           </div>
         </div>
       </div>
