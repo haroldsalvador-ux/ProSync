@@ -19,6 +19,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'workspaces',
     'audit',
+    'users',
+    'tasks',
 ]
 
 MIDDLEWARE = [

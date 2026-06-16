@@ -25,3 +25,8 @@ backend-admin/env/
 .DS_Store
 Thumbs.db
 *.log
+**/target/
+
+backend-user/target/
+__pycache__/
+*.pyc
