@@ -1,22 +1,22 @@
 # ─── Frontend ────────────────────────────────────────────────────────────────
 frontend/node_modules/
 frontend/dist/
+frontend/.vite/
 frontend/.env
 frontend/.env.local
 
 # ─── Spring Boot ─────────────────────────────────────────────────────────────
 backend-user/target/
 backend-user/.env
-backend-user/target/maven-status/
+**/target/
 **/maven-status/
 
 # ─── Django ──────────────────────────────────────────────────────────────────
-backend-admin/__pycache__/
-backend-admin/**/__pycache__/
-backend-admin/*.pyc
 backend-admin/.env
 backend-admin/venv/
 backend-admin/env/
+**/__pycache__/
+*.pyc
 
 # ─── Base de datos ────────────────────────────────────────────────────────────
 *.sql.bak
@@ -25,8 +25,3 @@ backend-admin/env/
 .DS_Store
 Thumbs.db
 *.log
-**/target/
-
-backend-user/target/
-__pycache__/
-*.pyc
