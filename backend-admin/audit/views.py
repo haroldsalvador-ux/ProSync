@@ -1,5 +1,6 @@
 from django.db import connection
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAdminUser
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
@@ -10,7 +11,8 @@ from .serializers import AuditLogSerializer
 
 class VelocityView(APIView):
     """Métricas de velocidad del equipo — consumidas por el dashboard de velocidad."""
-    permission_classes = [AllowAny]
+    authentication_classes = [TokenAuthentication]
+    permission_classes     = [IsAdminUser]
 
     def get(self, request):
         with connection.cursor() as cur:
@@ -91,7 +93,8 @@ class VelocityView(APIView):
 
 class MetricsView(APIView):
     """Métricas globales del sistema — consumidas por el dashboard de administración."""
-    permission_classes = [AllowAny]  # TODO: restringir con token de admin en producción
+    authentication_classes = [TokenAuthentication]
+    permission_classes     = [IsAdminUser]
 
     def get(self, request):
         with connection.cursor() as cur:
@@ -126,7 +129,8 @@ class MetricsView(APIView):
 
 class AuditLogListView(generics.ListAPIView):
     """Logs de auditoría paginados — 20 por página."""
-    permission_classes = [AllowAny]  # TODO: restringir con token de admin en producción
+    authentication_classes = [TokenAuthentication]
+    permission_classes     = [IsAdminUser]  # TODO: restringir con token de admin en producción
     serializer_class   = AuditLogSerializer
     queryset           = AuditLog.objects.all()
     page_size          = 20

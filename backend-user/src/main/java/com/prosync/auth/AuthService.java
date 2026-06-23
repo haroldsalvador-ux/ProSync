@@ -63,6 +63,9 @@ public class AuthService implements UserDetailsService {
         if (!passwordEncoder.matches(req.password(), user.getPasswordHash())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Credenciales inválidas");
         }
+        if (Boolean.TRUE.equals(user.getIsBlocked())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Tu cuenta ha sido bloqueada por el administrador");
+        }
         audit(email, "USER_LOGIN", "user", user.getId(), Map.of());
         return new AuthResponse(jwtUtil.generateToken(email), email, user.getFullName());
     }

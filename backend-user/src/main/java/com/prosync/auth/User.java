@@ -24,6 +24,9 @@ public class User {
     @Column
     private String role;
 
+    @Column(name = "is_blocked")
+    private Boolean isBlocked;
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private OffsetDateTime createdAt;
 
@@ -35,6 +38,8 @@ public class User {
     public String getPasswordHash()         { return passwordHash; }
     public String getFullName()             { return fullName; }
     public String getRole()                 { return role; }
+    public Boolean getIsBlocked()           { return isBlocked; }
+    public void setIsBlocked(Boolean v)     { this.isBlocked = v; }
     public OffsetDateTime getCreatedAt()    { return createdAt; }
     public OffsetDateTime getUpdatedAt()    { return updatedAt; }
 

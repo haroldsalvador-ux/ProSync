@@ -8,6 +8,7 @@ class AppUser(models.Model):
     password_hash = models.CharField(max_length=255)
     full_name     = models.CharField(max_length=255)
     role          = models.CharField(max_length=50, default='member')
+    is_blocked    = models.BooleanField(default=False)
     created_at    = models.DateTimeField(auto_now_add=True)
     updated_at    = models.DateTimeField(auto_now=True)
 
