@@ -14,25 +14,44 @@ import java.util.UUID;
 public class WorkspaceService {
 
     private final WorkspaceRepository repo;
-    private final UserRepository       userRepo;
-    private final JdbcTemplate         jdbc;
+    private final UserRepository userRepo;
+    private final JdbcTemplate jdbc;
 
     public WorkspaceService(WorkspaceRepository repo, UserRepository userRepo, JdbcTemplate jdbc) {
-        this.repo     = repo;
+        this.repo = repo;
         this.userRepo = userRepo;
-        this.jdbc     = jdbc;
+        this.jdbc = jdbc;
     }
 
-    public List<Workspace> findAll() {
-        return repo.findAll();
+    public List<Workspace> findAllForUser(String userEmail) {
+        return jdbc.query(
+                "SELECT w.* FROM workspaces w " +
+                        "JOIN workspace_members wm ON wm.workspace_id = w.id " +
+                        "WHERE wm.user_email = ?",
+                (rs, row) -> {
+                    Workspace w = new Workspace();
+                    w.setId((UUID) rs.getObject("id"));
+                    w.setName(rs.getString("name"));
+                    w.setDescription(rs.getString("description"));
+                    w.setDepartment(rs.getString("department"));
+                    w.setOwner(rs.getString("owner"));
+                    return w;
+                },
+                userEmail);
     }
 
     public Workspace create(WorkspaceRequest req) {
         UUID id = jdbc.queryForObject(
                 "INSERT INTO workspaces (name, description, department, owner) " +
-                "VALUES (?, ?, ?::department_enum, ?) RETURNING id",
+                        "VALUES (?, ?, ?::department_enum, ?) RETURNING id",
                 UUID.class,
                 req.name(), req.description(), req.department(), req.owner());
+
+        // El creador queda automáticamente como manager de su propio workspace
+        jdbc.update(
+                "INSERT INTO workspace_members (workspace_id, user_email, role) VALUES (?, ?, 'manager')",
+                id, req.owner());
+
         return repo.findById(id).orElseThrow();
     }
 
@@ -41,8 +60,8 @@ public class WorkspaceService {
     public List<UserResponse> getMembers(UUID workspaceId) {
         return jdbc.query(
                 "SELECT u.email, u.full_name FROM workspace_members wm " +
-                "JOIN users u ON u.email = wm.user_email " +
-                "WHERE wm.workspace_id = ? ORDER BY wm.added_at ASC",
+                        "JOIN users u ON u.email = wm.user_email " +
+                        "WHERE wm.workspace_id = ? ORDER BY wm.added_at ASC",
                 (rs, row) -> new UserResponse(rs.getString("email"), rs.getString("full_name")),
                 workspaceId);
     }
@@ -58,7 +77,7 @@ public class WorkspaceService {
         if (count != null && count > 0)
             throw new ResponseStatusException(HttpStatus.CONFLICT, "El usuario ya es miembro");
 
-        jdbc.update("INSERT INTO workspace_members (workspace_id, user_email) VALUES (?, ?)",
+        jdbc.update("INSERT INTO workspace_members (workspace_id, user_email, role) VALUES (?, ?, 'collaborator')",
                 workspaceId, email);
 
         return new UserResponse(user.getEmail(), user.getFullName());

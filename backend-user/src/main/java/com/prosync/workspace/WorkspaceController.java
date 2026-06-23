@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.security.core.Authentication;
+
 @RestController
 @RequestMapping("/api/workspaces")
 public class WorkspaceController {
@@ -19,8 +21,9 @@ public class WorkspaceController {
     }
 
     @GetMapping
-    public List<Workspace> list() {
-        return service.findAll();
+    public List<Workspace> list(Authentication authentication) {
+        String userEmail = authentication.getName();
+        return service.findAllForUser(userEmail);
     }
 
     @PostMapping
@@ -39,7 +42,7 @@ public class WorkspaceController {
     @PostMapping("/{id}/members")
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse addMember(@PathVariable UUID id,
-                                  @RequestBody @Valid WorkspaceMemberRequest req) {
+            @RequestBody @Valid WorkspaceMemberRequest req) {
         return service.addMember(id, req.email());
     }
 

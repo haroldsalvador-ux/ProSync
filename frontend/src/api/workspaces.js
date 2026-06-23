@@ -35,10 +35,13 @@ export async function addWorkspaceMember(workspaceId, email) {
     body:    JSON.stringify({ email }),
   });
   if (!res.ok) {
-    const msg = await res.text();
-    throw new Error(msg || 'Error al agregar miembro');
+    let msg = 'Error al agregar miembro';
+    try {
+      const data = await res.json();
+      msg = data.message || msg;
+    } catch {}
+    throw new Error(msg);
   }
-  return res.json();
 }
 
 export async function removeWorkspaceMember(workspaceId, email) {

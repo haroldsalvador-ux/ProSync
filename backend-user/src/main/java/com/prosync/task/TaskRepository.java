@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface TaskRepository extends JpaRepository<Task, UUID> {
     List<Task> findByWorkspaceIdOrderByCreatedAtAsc(UUID workspaceId);
+    List<Task> findByWorkspaceIdIn(List<UUID> workspaceIds);
 }

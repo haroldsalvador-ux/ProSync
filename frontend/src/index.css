@@ -37,3 +37,8 @@
     @apply block text-sm font-medium text-white/70 mb-1.5;
   }
 }
+
+select.input-glass option {
+  background-color: #0f0f23;
+  color: #ffffff;
+}

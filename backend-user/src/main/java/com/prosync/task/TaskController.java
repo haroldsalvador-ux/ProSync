@@ -24,8 +24,8 @@ public class TaskController {
     }
 
     @GetMapping("/all")
-    public List<Task> listAll() {
-        return service.findAll();
+    public List<Task> listAll(Authentication auth) {
+        return service.findAllForUser(auth.getName());
     }
 
     @PostMapping
@@ -36,8 +36,8 @@ public class TaskController {
 
     @PatchMapping("/{id}/status")
     public Task updateStatus(@PathVariable UUID id,
-                             @RequestBody @Valid TaskStatusRequest req,
-                             Authentication auth) {
+            @RequestBody @Valid TaskStatusRequest req,
+            Authentication auth) {
         return service.updateStatus(id, req.status(), auth.getName());
     }
 

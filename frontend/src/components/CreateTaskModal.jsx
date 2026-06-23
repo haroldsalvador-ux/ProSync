@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import { createTask } from '../api/tasks';
-import { getUsers } from '../api/users';
+import { getWorkspaceMembers } from '../api/workspaces';
 
 const PRIORITIES = ['low', 'medium', 'high'];
 const PRIORITY_LABEL = { low: 'Baja', medium: 'Media', high: 'Alta' };
 
 export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
-  const [form, setForm]     = useState({ title: '', description: '', priority: 'medium', assignee: '', dueDate: '' });
+  const [form, setForm] = useState({ title: '', description: '', priority: 'medium', assignee: '', dueDate: '' });
   const [saving, setSaving] = useState(false);
-  const [error, setError]   = useState('');
-  const [users, setUsers]   = useState([]);
+  const [error, setError] = useState('');
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    getUsers().then(setUsers).catch(() => {});
-  }, []);
+    getWorkspaceMembers(workspaceId).then(setUsers).catch(() => { });
+  }, [workspaceId]);
 
   const handle = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -26,12 +26,12 @@ export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
     try {
       const task = await createTask({
         workspaceId,
-        title:       form.title.trim(),
+        title: form.title.trim(),
         description: form.description.trim() || null,
-        priority:    form.priority,
-        assignee:    form.assignee || null,
-        dueDate:     form.dueDate || null,
-        status:      'pending',
+        priority: form.priority,
+        assignee: form.assignee || null,
+        dueDate: form.dueDate || null,
+        status: 'pending',
       });
       onCreated(task);
       onClose();
@@ -82,11 +82,10 @@ export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
                   key={p}
                   type="button"
                   onClick={() => setForm(f => ({ ...f, priority: p }))}
-                  className={`flex-1 py-2 rounded-xl text-xs font-semibold border transition-all duration-200 ${
-                    form.priority === p
+                  className={`flex-1 py-2 rounded-xl text-xs font-semibold border transition-all duration-200 ${form.priority === p
                       ? 'bg-burgundy/80 border-burgundy text-white shadow-neon-burgundy'
                       : 'bg-white/5 border-white/10 text-white/40 hover:border-white/30 hover:text-white/70'
-                  }`}
+                    }`}
                 >
                   {PRIORITY_LABEL[p]}
                 </button>

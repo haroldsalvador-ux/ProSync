@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { createWorkspace } from '../api/workspaces';
+import { useAuth } from '../context/AuthContext';
 
 const DEPARTMENTS = [
   'Engineering', 'Marketing', 'Design', 'Product',
@@ -8,6 +9,7 @@ const DEPARTMENTS = [
 ];
 
 export default function CreateWorkspaceModal({ onClose, onCreated }) {
+  const { user } = useAuth();
   const [form, setForm]     = useState({ name: '', description: '', department: '', owner: '' });
   const [saving, setSaving] = useState(false);
   const [error, setError]   = useState('');
@@ -24,7 +26,7 @@ export default function CreateWorkspaceModal({ onClose, onCreated }) {
         name:        form.name.trim(),
         description: form.description.trim() || null,
         department:  form.department || null,
-        owner:       form.owner.trim() || null,
+        owner:       user?.email || null,
       });
       onCreated(ws);
       onClose();

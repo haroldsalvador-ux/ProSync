@@ -23,8 +23,15 @@ public class TaskService {
         this.jdbc = jdbc;
     }
 
-    public List<Task> findAll() {
-        return repo.findAll();
+    public List<Task> findAllForUser(String userEmail) {
+        List<UUID> workspaceIds = jdbc.queryForList(
+                "SELECT workspace_id FROM workspace_members WHERE user_email = ?",
+                UUID.class, userEmail);
+
+        if (workspaceIds.isEmpty()) {
+            return List.of();
+        }
+        return repo.findByWorkspaceIdIn(workspaceIds);
     }
 
     public List<Task> findByWorkspace(UUID workspaceId) {
@@ -32,11 +39,12 @@ public class TaskService {
     }
 
     public Task create(TaskRequest req, String createdBy) {
-        String status   = req.status()   != null ? req.status()   : "pending";
+        String status = req.status() != null ? req.status() : "pending";
         String priority = req.priority() != null ? req.priority() : "medium";
         UUID id = Objects.requireNonNull(jdbc.queryForObject(
-                "INSERT INTO tasks (workspace_id, title, description, status, priority, assignee, created_by, due_date) " +
-                "VALUES (?, ?, ?, ?::task_status_enum, ?::task_priority_enum, ?, ?, ?) RETURNING id",
+                "INSERT INTO tasks (workspace_id, title, description, status, priority, assignee, created_by, due_date) "
+                        +
+                        "VALUES (?, ?, ?, ?::task_status_enum, ?::task_priority_enum, ?, ?, ?) RETURNING id",
                 UUID.class,
                 req.workspaceId(), req.title(), req.description(),
                 status, priority, req.assignee(), createdBy, req.dueDate()));
@@ -45,16 +53,14 @@ public class TaskService {
     }
 
     public Task updateStatus(UUID id, String newStatus, String userEmail) {
-        repo.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Tarea no encontrada"));
+        repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tarea no encontrada"));
         jdbc.update("UPDATE tasks SET status = ?::task_status_enum WHERE id = ?", newStatus, id);
         audit(userEmail, "TASK_STATUS_CHANGED", id, Map.of("status", newStatus));
         return repo.findById(id).orElseThrow();
     }
 
     public void delete(UUID id, String userEmail) {
-        repo.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Tarea no encontrada"));
+        repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tarea no encontrada"));
         audit(userEmail, "TASK_DELETED", id, Map.of());
         repo.deleteById(id);
     }
@@ -65,6 +71,7 @@ public class TaskService {
             jdbc.update(
                     "INSERT INTO audit_logs (user_email, action, entity_type, entity_id, details) VALUES (?, ?, ?, ?, ?::jsonb)",
                     userEmail, action, "task", entityId, json);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 }
