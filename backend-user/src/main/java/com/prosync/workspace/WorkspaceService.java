@@ -2,6 +2,7 @@ package com.prosync.workspace;
 
 import com.prosync.auth.UserRepository;
 import com.prosync.auth.UserResponse;
+import com.prosync.notification.NotificationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,14 @@ public class WorkspaceService {
     private final WorkspaceRepository repo;
     private final UserRepository userRepo;
     private final JdbcTemplate jdbc;
+    private final NotificationService notifications;
 
-    public WorkspaceService(WorkspaceRepository repo, UserRepository userRepo, JdbcTemplate jdbc) {
+    public WorkspaceService(WorkspaceRepository repo, UserRepository userRepo, JdbcTemplate jdbc,
+                            NotificationService notifications) {
         this.repo = repo;
         this.userRepo = userRepo;
         this.jdbc = jdbc;
+        this.notifications = notifications;
     }
 
     public List<Workspace> findAllForUser(String userEmail) {
@@ -79,6 +83,12 @@ public class WorkspaceService {
 
         jdbc.update("INSERT INTO workspace_members (workspace_id, user_email, role) VALUES (?, ?, 'collaborator')",
                 workspaceId, email);
+
+        // Avisar al usuario que fue agregado al workspace
+        Workspace ws = repo.findById(workspaceId).orElse(null);
+        String wsName = ws != null ? ws.getName() : "un workspace";
+        notifications.notifyUser(email, "WORKSPACE_ADDED",
+                "Te agregaron al workspace: " + wsName, null);
 
         return new UserResponse(user.getEmail(), user.getFullName());
     }

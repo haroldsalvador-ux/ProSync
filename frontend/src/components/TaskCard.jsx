@@ -1,4 +1,5 @@
-import { ChevronLeft, ChevronRight, Trash2, User, Calendar } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Trash2, User, Calendar, MessageSquare } from 'lucide-react';
+import { labelColor } from './TaskDetailModal';
 
 const STATUS_ORDER = ['pending', 'in_progress', 'done'];
 
@@ -29,11 +30,13 @@ function formatDate(dateStr) {
   return `${d}/${m}/${y}`;
 }
 
-export default function TaskCard({ task, onStatusChange, onDelete, loading }) {
+export default function TaskCard({ task, onStatusChange, onDelete, onOpenDetail, loading }) {
   const idx      = STATUS_ORDER.indexOf(task.status);
   const canLeft  = idx > 0;
   const canRight = idx < STATUS_ORDER.length - 1;
   const dueInfo  = dueDateStyle(task.dueDate);
+
+  const labels = (task.labels || '').split(',').map(s => s.trim()).filter(Boolean);
 
   const assigneeInitials = task.assignee
     ? task.assignee.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
@@ -54,8 +57,23 @@ export default function TaskCard({ task, onStatusChange, onDelete, loading }) {
         </button>
       </div>
 
-      {/* Título */}
-      <p className="text-white/85 text-sm font-medium leading-snug mb-3">{task.title}</p>
+      {/* Título (clic abre detalle + comentarios) */}
+      <button
+        type="button"
+        onClick={() => onOpenDetail?.(task)}
+        className="text-left w-full text-white/85 text-sm font-medium leading-snug mb-2 hover:text-white transition-colors"
+      >
+        {task.title}
+      </button>
+
+      {/* Etiquetas */}
+      {labels.length > 0 && (
+        <div className="flex flex-wrap gap-1 mb-2.5">
+          {labels.map(l => (
+            <span key={l} className={`text-[9px] px-1.5 py-0.5 rounded-md border ${labelColor(l)}`}>{l}</span>
+          ))}
+        </div>
+      )}
 
       {/* Descripción */}
       {task.description && (
@@ -96,7 +114,13 @@ export default function TaskCard({ task, onStatusChange, onDelete, loading }) {
         >
           <ChevronLeft size={14} />
         </button>
-        <span className="text-white/20 text-[10px]">mover</span>
+        <button
+          onClick={() => onOpenDetail?.(task)}
+          className="flex items-center gap-1 text-white/25 hover:text-white/70 transition-all px-2 py-1 rounded-lg hover:bg-white/10"
+          title="Ver detalle y comentarios"
+        >
+          <MessageSquare size={12} />
+        </button>
         <button
           onClick={() => canRight && onStatusChange(task.id, STATUS_ORDER[idx + 1])}
           disabled={!canRight}

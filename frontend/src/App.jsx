@@ -9,6 +9,7 @@ import DashboardHome from './pages/DashboardHome';
 import WorkspacesPage from './pages/WorkspacesPage';
 import BoardPage from './pages/BoardPage';
 import TasksPage from './pages/TasksPage';
+import CalendarPage from './pages/CalendarPage';
 import ReportsPage from './pages/ReportsPage';
 import SettingsPage from './pages/SettingsPage';
 
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="/workspaces"  element={<WorkspacesPage />} />
             <Route path="/board"       element={<BoardPage />} />
             <Route path="/tasks"       element={<TasksPage />} />
+            <Route path="/calendar"    element={<CalendarPage />} />
             <Route path="/reports"     element={<ReportsPage />} />
             <Route path="/settings"    element={<SettingsPage />} />
             <Route path="*"            element={<Navigate to="/dashboard" replace />} />

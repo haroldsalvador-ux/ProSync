@@ -39,6 +39,10 @@ public class Task {
     @Column(name = "due_date")
     private LocalDate dueDate;
 
+    // Etiquetas separadas por comas (ej. "frontend,urgente")
+    @Column
+    private String labels;
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private OffsetDateTime createdAt;
 
@@ -54,6 +58,7 @@ public class Task {
     public String getAssignee()          { return assignee; }
     public String getCreatedBy()         { return createdBy; }
     public LocalDate getDueDate()        { return dueDate; }
+    public String getLabels()            { return labels; }
     public OffsetDateTime getCreatedAt() { return createdAt; }
     public OffsetDateTime getUpdatedAt() { return updatedAt; }
 
@@ -66,6 +71,7 @@ public class Task {
     public void setAssignee(String assignee)            { this.assignee = assignee; }
     public void setCreatedBy(String createdBy)          { this.createdBy = createdBy; }
     public void setDueDate(LocalDate dueDate)           { this.dueDate = dueDate; }
+    public void setLabels(String labels)                { this.labels = labels; }
     public void setCreatedAt(OffsetDateTime v)          { this.createdAt = v; }
     public void setUpdatedAt(OffsetDateTime v)          { this.updatedAt = v; }
 }

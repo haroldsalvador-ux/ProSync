@@ -71,7 +71,7 @@ export default function LoginPage() {
                   name="username"
                   value={form.username}
                   onChange={handle}
-                  placeholder="xiomara"
+                  placeholder="usuario"
                   autoComplete="username"
                   className="input-glass pl-10"
                 />

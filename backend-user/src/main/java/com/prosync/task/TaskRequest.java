@@ -13,5 +13,6 @@ public record TaskRequest(
         String status,
         String priority,
         String assignee,
-        LocalDate dueDate
+        LocalDate dueDate,
+        String labels
 ) {}

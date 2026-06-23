@@ -4,6 +4,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { getTasks, updateTaskStatus, deleteTask } from '../api/tasks';
 import TaskCard from './TaskCard';
 import CreateTaskModal from './CreateTaskModal';
+import TaskDetailModal, { labelColor } from './TaskDetailModal';
 
 const COLUMNS = [
   { id: 'pending',     label: 'Por Hacer',  accent: '#6b7280' },
@@ -18,6 +19,8 @@ export default function KanbanBoard({ workspaceId }) {
   const [showModal, setShowModal] = useState(false);
   const [movingId, setMovingId]   = useState(null);
   const [search, setSearch]       = useState('');
+  const [detailTask, setDetailTask] = useState(null);
+  const [activeLabel, setActiveLabel] = useState(null);
 
   const load = useCallback(async () => {
     if (!workspaceId) { setLoading(false); return; }
@@ -94,13 +97,18 @@ export default function KanbanBoard({ workspaceId }) {
   }
 
   const q = search.toLowerCase().trim();
-  const filtered = q
-    ? tasks.filter(t =>
-        t.title.toLowerCase().includes(q) ||
-        (t.assignee && t.assignee.toLowerCase().includes(q)) ||
-        (t.description && t.description.toLowerCase().includes(q))
-      )
-    : tasks;
+  const taskLabels = (t) => (t.labels || '').split(',').map(s => s.trim()).filter(Boolean);
+  const allLabels = [...new Set(tasks.flatMap(taskLabels))];
+
+  const filtered = tasks.filter(t => {
+    const matchesSearch = !q ||
+      t.title.toLowerCase().includes(q) ||
+      (t.assignee && t.assignee.toLowerCase().includes(q)) ||
+      (t.description && t.description.toLowerCase().includes(q)) ||
+      taskLabels(t).some(l => l.toLowerCase().includes(q));
+    const matchesLabel = !activeLabel || taskLabels(t).includes(activeLabel);
+    return matchesSearch && matchesLabel;
+  });
 
   const done  = tasks.filter(t => t.status === 'done').length;
   const total = tasks.length;
@@ -151,6 +159,30 @@ export default function KanbanBoard({ workspaceId }) {
           </button>
         </div>
       </div>
+
+      {/* Filtro por etiquetas */}
+      {allLabels.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1.5 mb-5">
+          {allLabels.map(l => (
+            <button
+              key={l}
+              onClick={() => setActiveLabel(activeLabel === l ? null : l)}
+              className={`text-[11px] px-2.5 py-1 rounded-lg border transition-all ${
+                activeLabel === l
+                  ? `${labelColor(l)} ring-1 ring-white/30`
+                  : 'bg-white/5 border-white/10 text-white/40 hover:text-white/70 hover:border-white/20'
+              }`}
+            >
+              {l}
+            </button>
+          ))}
+          {activeLabel && (
+            <button onClick={() => setActiveLabel(null)} className="text-[11px] text-white/30 hover:text-white/60 underline ml-1">
+              limpiar filtro
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Progreso móvil */}
       {total > 0 && (
@@ -210,6 +242,7 @@ export default function KanbanBoard({ workspaceId }) {
                                 loading={movingId === task.id}
                                 onStatusChange={handleStatusChange}
                                 onDelete={handleDelete}
+                                onOpenDetail={setDetailTask}
                               />
                             </div>
                           )}
@@ -238,6 +271,10 @@ export default function KanbanBoard({ workspaceId }) {
           onClose={() => setShowModal(false)}
           onCreated={handleCreated}
         />
+      )}
+
+      {detailTask && (
+        <TaskDetailModal task={detailTask} onClose={() => setDetailTask(null)} />
       )}
     </>
   );

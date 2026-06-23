@@ -57,3 +57,20 @@ export async function deleteTask(id) {
   });
   if (!res.ok) throw new Error('Error al eliminar tarea');
 }
+
+// ─── Comentarios ─────────────────────────────────────────────────────────────
+export async function getComments(taskId) {
+  const res = await fetch(`${BASE}/tasks/${taskId}/comments`, { headers: authHeaders() });
+  if (!res.ok) throw new Error('Error al obtener comentarios');
+  return res.json();
+}
+
+export async function addComment(taskId, body) {
+  const res = await fetch(`${BASE}/tasks/${taskId}/comments`, {
+    method:  'POST',
+    headers: authHeaders(),
+    body:    JSON.stringify({ body }),
+  });
+  if (!res.ok) throw new Error('Error al agregar comentario');
+  return res.json();
+}

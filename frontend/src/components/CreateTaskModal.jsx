@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Loader2 } from 'lucide-react';
+import { X, Loader2, Tag } from 'lucide-react';
 import { createTask } from '../api/tasks';
 import { getWorkspaceMembers } from '../api/workspaces';
 
@@ -8,6 +8,8 @@ const PRIORITY_LABEL = { low: 'Baja', medium: 'Media', high: 'Alta' };
 
 export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
   const [form, setForm] = useState({ title: '', description: '', priority: 'medium', assignee: '', dueDate: '' });
+  const [labels, setLabels] = useState([]);
+  const [labelInput, setLabelInput] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [users, setUsers] = useState([]);
@@ -17,6 +19,16 @@ export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
   }, [workspaceId]);
 
   const handle = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+
+  const addLabel = () => {
+    const v = labelInput.trim().replace(/,/g, '');
+    if (v && !labels.includes(v) && labels.length < 6) setLabels(ls => [...ls, v]);
+    setLabelInput('');
+  };
+  const removeLabel = (l) => setLabels(ls => ls.filter(x => x !== l));
+  const handleLabelKey = (e) => {
+    if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); addLabel(); }
+  };
 
   const submit = async (e) => {
     e.preventDefault();
@@ -31,6 +43,7 @@ export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
         priority: form.priority,
         assignee: form.assignee || null,
         dueDate: form.dueDate || null,
+        labels: labels.join(','),
         status: 'pending',
       });
       onCreated(task);
@@ -129,6 +142,30 @@ export default function CreateTaskModal({ workspaceId, onClose, onCreated }) {
               onChange={handle}
               className="input-glass"
               style={{ colorScheme: 'dark' }}
+            />
+          </div>
+
+          {/* Etiquetas */}
+          <div>
+            <label className="label-glass flex items-center gap-1.5"><Tag size={12} /> Etiquetas</label>
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {labels.map(l => (
+                <span key={l} className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-lg bg-burgundy/20 border border-burgundy/30 text-burgundy-light">
+                  {l}
+                  <button type="button" onClick={() => removeLabel(l)} className="hover:text-white">
+                    <X size={11} />
+                  </button>
+                </span>
+              ))}
+            </div>
+            <input
+              value={labelInput}
+              onChange={e => setLabelInput(e.target.value)}
+              onKeyDown={handleLabelKey}
+              onBlur={addLabel}
+              placeholder="Escribe y presiona Enter (ej. frontend)"
+              className="input-glass text-sm"
+              disabled={labels.length >= 6}
             />
           </div>
 

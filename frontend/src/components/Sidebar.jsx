@@ -1,14 +1,16 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard, Layers, CheckSquare,
+  LayoutDashboard, Layers, CheckSquare, CalendarDays,
   BarChart2, Settings, Zap, LogOut, User,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import NotificationBell from './NotificationBell';
 
 const NAV = [
   { label: 'Dashboard',  icon: LayoutDashboard, to: '/dashboard',  end: true  },
   { label: 'Workspaces', icon: Layers,           to: '/workspaces', end: true  },
   { label: 'Tareas',     icon: CheckSquare,      to: '/tasks',      end: true  },
+  { label: 'Calendario', icon: CalendarDays,     to: '/calendar',   end: true  },
   { label: 'Reportes',   icon: BarChart2,        to: '/reports',    end: true  },
 ];
 
@@ -35,10 +37,13 @@ export default function Sidebar() {
 
   return (
     <aside className="w-60 flex-shrink-0 bg-navy-dark border-r border-white/10 flex flex-col h-full">
-      {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-white/10">
-        <Zap size={20} className="text-burgundy" />
-        <span className="text-white font-bold text-lg tracking-wide">ProSync</span>
+      {/* Logo + notificaciones */}
+      <div className="flex items-center justify-between px-5 py-5 border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <Zap size={20} className="text-burgundy" />
+          <span className="text-white font-bold text-lg tracking-wide">ProSync</span>
+        </div>
+        <NotificationBell />
       </div>
 
       {/* Nav */}
