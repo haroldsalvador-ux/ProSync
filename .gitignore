@@ -1,24 +1,25 @@
-# ─── Frontend ────────────────────────────────────────────────────────────────
-frontend/node_modules/
-frontend/dist/
-frontend/.vite/
-frontend/.env
-frontend/.env.local
+# ─── Dependencias (Node) ─────────────────────────────────────────────────────
+**/node_modules/
+**/dist/
+**/.vite/
+package-lock.json
 
-# ─── Spring Boot ─────────────────────────────────────────────────────────────
-backend-user/target/
-backend-user/.env
+# ─── Spring Boot / Maven ─────────────────────────────────────────────────────
 **/target/
 **/maven-status/
 
-# ─── Django ──────────────────────────────────────────────────────────────────
-backend-admin/.env
-backend-admin/venv/
-backend-admin/env/
+# ─── Python / Django ─────────────────────────────────────────────────────────
+**/venv/
+**/.venv/
+**/env/
 **/__pycache__/
 *.pyc
 
-# ─── Base de datos ────────────────────────────────────────────────────────────
+# ─── Variables de entorno ────────────────────────────────────────────────────
+**/.env
+**/.env.local
+
+# ─── Base de datos ───────────────────────────────────────────────────────────
 *.sql.bak
 
 # ─── Sistema ─────────────────────────────────────────────────────────────────
