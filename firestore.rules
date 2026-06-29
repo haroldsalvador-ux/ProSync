@@ -1,0 +1,76 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Funciones de utilidad
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function getRole(workspaceId) {
+      return get(/databases/$(database)/documents/workspace_members/$(workspaceId + "_" + request.auth.uid)).data.role;
+    }
+
+    function isManager(workspaceId) {
+      return isSignedIn() && getRole(workspaceId) == 'manager';
+    }
+
+    function isMember(workspaceId) {
+      return isSignedIn() && exists(/databases/$(database)/documents/workspace_members/$(workspaceId + "_" + request.auth.uid));
+    }
+
+    // Reglas para Colección Usuarios
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && isOwner(userId);
+      allow update: if isSignedIn() && isOwner(userId);
+    }
+
+    // Reglas para Colección Workspaces
+    match /workspaces/{workspaceId} {
+      allow read: if isSignedIn() && (request.auth.uid in resource.data.memberUids);
+      allow create: if isSignedIn();
+      allow update: if isManager(workspaceId);
+      allow delete: if isManager(workspaceId);
+    }
+
+    // Reglas para Miembros del Workspace
+    match /workspace_members/{memberId} {
+      allow read: if isMember(resource.data.workspaceId);
+      allow create: if isSignedIn(); // Para el creador inicial
+      allow update, delete: if isManager(resource.data.workspaceId);
+    }
+
+    // Reglas para Tareas
+    match /tasks/{taskId} {
+      allow read: if isMember(resource.data.workspaceId);
+      allow create: if isManager(request.resource.data.workspaceId);
+      allow update: if isMember(resource.data.workspaceId);
+      allow delete: if isManager(resource.data.workspaceId);
+    }
+
+    // Reglas para Comentarios
+    match /comments/{commentId} {
+      allow read: if isMember(resource.data.workspaceId);
+      allow create: if isMember(request.resource.data.workspaceId);
+      allow delete: if isOwner(resource.data.userUid) || isManager(resource.data.workspaceId);
+    }
+
+    // Reglas para Notificaciones
+    match /notifications/{notifId} {
+      allow read, update, delete: if isOwner(resource.data.userUid);
+      allow create: if isSignedIn();
+    }
+
+    // Reglas para Historial
+    match /history/{historyId} {
+      allow read: if isMember(resource.data.workspaceId);
+      allow create: if isSignedIn();
+    }
+  }
+}

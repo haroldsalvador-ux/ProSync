@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.ProSync" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/gold</item>
+        <item name="android:statusBarColor">@color/primary_darker</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="materialCardViewStyle">@style/ProSyncCard</item>
+    </style>
+
+    <style name="ProSyncCard" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/card_bg</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">8dp</item>
+        <item name="strokeColor">@color/primary_light</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
+
+    <style name="GoldButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/gold</item>
+        <item name="android:textColor">@color/primary_darker</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
+
+    <style name="OutlineGoldButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/gold</item>
+        <item name="android:textColor">@color/gold</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
+
+    <style name="ProSyncDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:background">@color/surface</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="colorPrimary">@color/gold</item>
+        <item name="colorAccent">@color/gold</item>
+        <item name="buttonBarPositiveButtonStyle">@style/GoldButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/OutlineGoldButton</item>
+    </style>
+</resources>

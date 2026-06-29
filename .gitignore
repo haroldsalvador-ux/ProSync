@@ -1,0 +1,43 @@
+*.iml
+.gradle
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+*.apk
+*.ap_
+*.dex
+*.class
+
+# Firebase
+google-services.json
+
+# Local history
+.history/
+
+# Node.js
+node_modules/
+functions/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+firebase-debug.log*
+
+# Android Studio
+*.iml
+.idea/
+.gradle/
+local.properties
+/build/
+/captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+/output.json
+
+# OS files
+.DS_Store
+Thumbs.db

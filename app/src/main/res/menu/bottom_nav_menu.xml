@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/dashboardFragment"
+        android:icon="@drawable/ic_dashboard"
+        android:title="Inicio"/>
+
+    <item
+        android:id="@+id/managerHomeFragment"
+        android:icon="@drawable/ic_manager"
+        android:title="Panel"/>
+
+    <item
+        android:id="@+id/workspacesFragment"
+        android:icon="@drawable/ic_workspaces"
+        android:title="Workspaces"/>
+
+    <item
+        android:id="@+id/calendarFragment"
+        android:icon="@drawable/ic_calendar"
+        android:title="Calendario"/>
+
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_profile"
+        android:title="Perfil"/>
+
+</menu>

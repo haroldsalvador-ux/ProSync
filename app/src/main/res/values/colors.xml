@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Morado oscuro premium -->
+    <color name="primary">#6C3FBF</color>
+    <color name="primary_dark">#4A2080</color>
+    <color name="primary_darker">#2D1150</color>
+    <color name="primary_light">#9B6FE0</color>
+
+    <!-- Dorado -->
+    <color name="gold">#FFD700</color>
+    <color name="gold_dark">#C9A600</color>
+    <color name="gold_light">#FFE84D</color>
+
+    <!-- Fondos -->
+    <color name="background">#0F0A1E</color>
+    <color name="surface">#1A1035</color>
+    <color name="surface_light">#241848</color>
+    <color name="card_bg">#1E1340</color>
+
+    <!-- Textos -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0A0D0</color>
+    <color name="text_hint">#7060A0</color>
+
+    <!-- Estados -->
+    <color name="error">#FF4D6D</color>
+    <color name="success">#00E5A0</color>
+    <color name="warning">#FFB347</color>
+
+    <!-- Kanban -->
+    <color name="pending_color">#9B6FE0</color>
+    <color name="in_progress_color">#FFB347</color>
+    <color name="done_color">#00E5A0</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+</resources>

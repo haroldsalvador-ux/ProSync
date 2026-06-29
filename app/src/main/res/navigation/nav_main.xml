@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/managerHomeFragment"
+        android:name="com.prosync.android.ui.main.ManagerHomeFragment"
+        android:label="Panel Manager"/>
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.prosync.android.ui.main.DashboardFragment"
+        android:label="Inicio"/>
+
+    <fragment
+        android:id="@+id/workspacesFragment"
+        android:name="com.prosync.android.ui.workspaces.WorkspacesFragment"
+        android:label="Workspaces">
+        <action
+            android:id="@+id/action_workspaces_to_board"
+            app:destination="@id/boardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/boardFragment"
+        android:name="com.prosync.android.ui.board.BoardFragment"
+        android:label="Tablero">
+        <argument
+            android:name="workspaceId"
+            app:argType="string"/>
+        <argument
+            android:name="workspaceName"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_board_to_task_detail"
+            app:destination="@id/taskDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/taskDetailFragment"
+        android:name="com.prosync.android.ui.board.TaskDetailFragment"
+        android:label="Detalle">
+        <argument
+            android:name="taskId"
+            app:argType="string"/>
+        <argument
+            android:name="workspaceId"
+            app:argType="string"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.prosync.android.ui.notifications.NotificationsFragment"
+        android:label="Notificaciones"/>
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.prosync.android.ui.calendar.CalendarFragment"
+        android:label="Calendario"/>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.prosync.android.ui.profile.ProfileFragment"
+        android:label="Perfil"/>
+
+</navigation>
