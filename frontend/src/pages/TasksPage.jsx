@@ -6,14 +6,14 @@ import { getWorkspaces } from '../api/workspaces';
 
 const STATUS_LABEL = { pending: 'Por Hacer', in_progress: 'En Proceso', done: 'Completado' };
 const STATUS_COLOR = {
-  pending:     'bg-gray-500/15 text-gray-400 border-gray-500/20',
-  in_progress: 'bg-blue-500/15 text-blue-400 border-blue-500/20',
-  done:        'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
+  pending:     'bg-slate-400/20 text-slate-300 border-slate-400/30',
+  in_progress: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+  done:        'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
 };
 const PRIORITY_COLOR = {
-  low:    'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
-  medium: 'bg-amber-500/15 text-amber-400 border-amber-500/20',
-  high:   'bg-red-500/15 text-red-400 border-red-500/20',
+  low:    'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+  medium: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+  high:   'bg-red-500/20 text-red-300 border-red-500/30',
 };
 const PRIORITY_LABEL = { low: 'Baja', medium: 'Media', high: 'Alta' };
 

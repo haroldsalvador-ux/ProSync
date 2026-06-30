@@ -3,20 +3,20 @@ import { X, Send, MessageSquare, User, Calendar, Loader2, Tag } from 'lucide-rea
 import { getComments, addComment } from '../api/tasks';
 
 const PRIORITY_BADGE = {
-  low:    'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
-  medium: 'bg-amber-500/15 text-amber-400 border-amber-500/20',
-  high:   'bg-red-500/15 text-red-400 border-red-500/20',
+  low:    'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+  medium: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+  high:   'bg-red-500/20 text-red-300 border-red-500/30',
 };
 const PRIORITY_LABEL = { low: 'Baja', medium: 'Media', high: 'Alta' };
 
 // Color determinístico por etiqueta
 const LABEL_COLORS = [
-  'bg-purple-500/15 text-purple-300 border-purple-500/25',
-  'bg-blue-500/15 text-blue-300 border-blue-500/25',
-  'bg-emerald-500/15 text-emerald-300 border-emerald-500/25',
-  'bg-amber-500/15 text-amber-300 border-amber-500/25',
-  'bg-pink-500/15 text-pink-300 border-pink-500/25',
-  'bg-cyan-500/15 text-cyan-300 border-cyan-500/25',
+  'bg-purple-500/25 text-purple-200 border-purple-500/35',
+  'bg-blue-500/25 text-blue-200 border-blue-500/35',
+  'bg-emerald-500/25 text-emerald-200 border-emerald-500/35',
+  'bg-amber-500/25 text-amber-200 border-amber-500/35',
+  'bg-pink-500/25 text-pink-200 border-pink-500/35',
+  'bg-cyan-500/25 text-cyan-200 border-cyan-500/35',
 ];
 export function labelColor(label) {
   let h = 0;

@@ -4,9 +4,9 @@ import { labelColor } from './TaskDetailModal';
 const STATUS_ORDER = ['pending', 'in_progress', 'done'];
 
 const PRIORITY_BADGE = {
-  low:    'bg-emerald-500/15 text-emerald-400 border-emerald-500/20',
-  medium: 'bg-amber-500/15 text-amber-400 border-amber-500/20',
-  high:   'bg-red-500/15 text-red-400 border-red-500/20',
+  low:    'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+  medium: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+  high:   'bg-red-500/20 text-red-300 border-red-500/30',
 };
 
 const PRIORITY_LABEL = { low: 'Baja', medium: 'Media', high: 'Alta' };

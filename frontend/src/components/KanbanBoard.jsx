@@ -7,8 +7,8 @@ import CreateTaskModal from './CreateTaskModal';
 import TaskDetailModal, { labelColor } from './TaskDetailModal';
 
 const COLUMNS = [
-  { id: 'pending',     label: 'Por Hacer',  accent: '#6b7280' },
-  { id: 'in_progress', label: 'En Proceso', accent: '#004170' },
+  { id: 'pending',     label: 'Por Hacer',  accent: '#94a3b8' },
+  { id: 'in_progress', label: 'En Proceso', accent: '#22d3ee' },
   { id: 'done',        label: 'Completado', accent: '#10b981' },
 ];
 
