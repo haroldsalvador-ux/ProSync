@@ -101,7 +101,7 @@ export default function RegisterPage() {
                   name="fullName"
                   value={form.fullName}
                   onChange={handle}
-                  placeholder="Gabriel Vargas"
+                  placeholder="Tu nombre completo"
                   autoComplete="name"
                   className="input-glass pl-10"
                 />
