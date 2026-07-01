@@ -3,14 +3,14 @@ import { RefreshCw, Layers, Users } from 'lucide-react';
 import { getAdminWorkspaces } from '../api/admin';
 
 const DEPT_COLOR = {
-  Engineering: 'bg-blue-500/15 text-blue-400',
-  Marketing:   'bg-pink-500/15 text-pink-400',
-  Design:      'bg-purple-500/15 text-purple-400',
-  Product:     'bg-amber-500/15 text-amber-400',
-  Sales:       'bg-emerald-500/15 text-emerald-400',
-  HR:          'bg-cyan-500/15 text-cyan-400',
-  Finance:     'bg-lime-500/15 text-lime-400',
-  Operations:  'bg-orange-500/15 text-orange-400',
+  Engineering: 'bg-blue-500/20 text-blue-300',
+  Marketing:   'bg-pink-500/20 text-pink-300',
+  Design:      'bg-purple-500/20 text-purple-300',
+  Product:     'bg-amber-500/20 text-amber-300',
+  Sales:       'bg-emerald-500/20 text-emerald-300',
+  HR:          'bg-cyan-500/20 text-cyan-300',
+  Finance:     'bg-lime-500/20 text-lime-300',
+  Operations:  'bg-orange-500/20 text-orange-300',
 };
 
 export default function WorkspacesAdminPage() {

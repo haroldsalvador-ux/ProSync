@@ -71,8 +71,8 @@ export default function UsersPage() {
                     <td className="px-5 py-3 text-white/60 text-xs">{u.email}</td>
                     <td className="px-5 py-3 text-white/40 text-xs">{formatDate(u.created_at)}</td>
                     <td className="px-5 py-3">
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-                        u.is_blocked ? 'bg-red-500/15 text-red-400' : 'bg-emerald-500/15 text-emerald-400'
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+                        u.is_blocked ? 'bg-red-500/20 text-red-300 border-red-500/30' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
                       }`}>
                         {u.is_blocked ? 'Bloqueado' : 'Activo'}
                       </span>

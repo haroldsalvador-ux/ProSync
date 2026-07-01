@@ -12,19 +12,27 @@ export default {
           light:   '#1e3a5f',
         },
         burgundy: {
-          DEFAULT: '#a50044',
-          dark:    '#7d0033',
-          light:   '#cc0055',
+          DEFAULT: '#c4005a',
+          dark:    '#a50044',
+          light:   '#ff2d7e',
+        },
+        // Acento vibrante secundario — coherente con la app de usuarios
+        accent: {
+          DEFAULT: '#22d3ee',
+          dark:    '#0891b2',
+          light:   '#67e8f9',
         },
       },
       backgroundImage: {
-        'blaugrana': 'linear-gradient(135deg, #0a1628 0%, #162040 40%, #1a0614 70%, #0a1628 100%)',
+        'blaugrana': 'linear-gradient(135deg, #0d1b30 0%, #1b2a4e 38%, #2a0a22 72%, #0d1b30 100%)',
+        'glass-sheen': 'linear-gradient(135deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 100%)',
       },
       boxShadow: {
-        'glass':             '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)',
+        'glass':             '0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)',
         'glass-lg':          '0 20px 60px rgba(0,0,0,0.5)',
-        'neon-burgundy':     '0 0 20px rgba(165,0,68,0.35)',
-        'neon-burgundy-lg':  '0 0 35px rgba(165,0,68,0.55)',
+        'neon-burgundy':     '0 0 22px rgba(196,0,90,0.45)',
+        'neon-burgundy-lg':  '0 0 38px rgba(196,0,90,0.6)',
+        'neon-accent':       '0 0 22px rgba(34,211,238,0.45)',
         'neon-blue':         '0 0 20px rgba(0,65,112,0.4)',
       },
       animation: {
